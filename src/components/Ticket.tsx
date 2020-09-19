@@ -1,19 +1,22 @@
 import React from 'react';
 import { Segment as ISegment, Ticket as ITicket } from '../types';
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+import { lighten } from 'polished';
+import { Theme } from '../styles/theme';
+import { skeletonStyle } from '../styles/ui';
 
 
 const StyledTicket = styled.li`
-  width: 502px;
+  max-width: 502px;
   background-color: white;
-  padding: 14px 21px;
+  padding: 19px 21px;
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 
   
   &:not(:last-child) {
-    margin-bottom: 1.5rem;
+    margin-bottom: 21px;
   }
 `;
 
@@ -21,11 +24,12 @@ const Header = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 1.5rem;
+  justify-content: flex-start;
+  margin-bottom: 21px;
 `;
 
 const Price = styled.div`
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.blue};
   flex: 3;
@@ -41,7 +45,7 @@ const StyledSegment = styled.div`
   //justify-content: space-between;
   
   &:not(:last-child) {
-    margin-bottom: 1rem;
+    margin-bottom: 14px;
   }
 `;
 
@@ -54,10 +58,11 @@ const SegmentPart = styled.div`
 `;
 
 const PartHeader = styled.div`
-   font-size: 0.8rem;
+   font-size: 12px;
    font-weight: 600;
    color: ${({ theme }) => theme.colors.textMuted};
    text-transform: uppercase;
+   margin-bottom: 6px;
 `;
 
 const PartBody = styled.div`
@@ -76,7 +81,7 @@ function Ticket({ ticket }: TicketProps) {
       <Header>
         <Price>{ticket.price.toLocaleString('ru')} Р</Price>
         <Carrier>
-          <img src={getIATALogo(ticket.carrier)} alt="logo" />
+          <img src={getIATALogo(ticket.carrier)} alt={ticket.carrier} />
         </Carrier>
       </Header>
       {ticket.segments.map((segment, idx) => <Segment key={idx} segment={segment} />)}
@@ -85,7 +90,7 @@ function Ticket({ ticket }: TicketProps) {
 }
 
 const divmod = (value: number, denominator: number): number[] => {
-  return [Math.floor(value / denominator), value % denominator];
+  return [Math.trunc(value / denominator), value % denominator];
 };
 
 const formatMinutes = (minutes: number): string => {
@@ -108,11 +113,9 @@ const formatTime = (date: Date) => {
 };
 
 const addMinutes = (date: Date, minutes: number) => {
-  return new Date(date.getTime() + minutes * 60 * Math.pow(10, 6));
+  return new Date(date.getTime() + minutes * 60 * Math.pow(10, 3));
 
 };
-
-
 
 
 const createCountFormatter = (one: string, two: string, few: string) => {
@@ -143,10 +146,10 @@ function Segment({ segment }: SegmentProps) {
     <StyledSegment>
       <SegmentPart>
         <PartHeader>
-          {segment.origin} - {segment.destination}
+          {segment.origin} – {segment.destination}
         </PartHeader>
         <PartBody>
-          {formatTime(date)} - {formatTime(addMinutes(date, segment.duration))}
+          {formatTime(date)} – {formatTime(addMinutes(date, segment.duration))}
         </PartBody>
       </SegmentPart>
       <SegmentPart>
@@ -159,13 +162,61 @@ function Segment({ segment }: SegmentProps) {
       </SegmentPart>
       <SegmentPart>
         <PartHeader>
-          {segment.stops.length} {stopFormatter(segment.stops.length)}
+          {segment.stops.length ? segment.stops.length : 'Без'} {stopFormatter(segment.stops.length)}
         </PartHeader>
         <PartBody>
-          {segment.stops.join(', ')}
+          {segment.stops.join(', ') || 'Прямой'}
         </PartBody>
       </SegmentPart>
     </StyledSegment>
+  );
+}
+
+
+
+
+const SkeletonPrice = styled.div`
+  ${skeletonStyle('40%', '24px')};
+`;
+
+const SkeletonCarrier = styled.div`
+  ${skeletonStyle('90%', '39px')};
+`;
+
+const SkeletonPartHeader = styled(PartHeader)`
+  ${skeletonStyle('50%', '13px')};
+`;
+
+const SkeletonPartBody = styled(PartBody)`
+  ${skeletonStyle('40%', '16px')};
+`;
+
+export function TicketSkeleton() {
+  return (
+    <StyledTicket>
+      <Header>
+        <Price>
+          <SkeletonPrice />
+        </Price>
+        <Carrier>
+          <SkeletonCarrier />
+        </Carrier>
+      </Header>
+      {Array(2).fill(null).map((_, idx) => {
+        return (
+          <StyledSegment key={idx}>
+            {Array(3).fill(null).map((_, idx) => {
+              return (
+                <SegmentPart key={idx}>
+                  <SkeletonPartHeader />
+                  <SkeletonPartBody />
+                </SegmentPart>
+              );
+            })}
+          </StyledSegment>
+        );
+      })}
+    </StyledTicket>
   );
 }
 

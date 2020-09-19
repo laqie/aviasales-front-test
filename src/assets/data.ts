@@ -4,6 +4,31 @@ import {TicketsResponse} from '../types';
 export const ticketsResponse: TicketsResponse = {
   'tickets': [
     {
+      'price': 13400,
+      'carrier': 'S7',
+      'segments': [
+        {
+          'origin': 'MOW',
+          'destination': 'HKT',
+          'date': '2020-09-28T10:45:00.000Z',
+          'stops': [
+            'HKG',
+            'JNB'
+          ],
+          'duration': 21 * 60 + 15,
+        },
+        {
+          'origin': 'MOW',
+          'destination': 'HKT',
+          'date': '2020-10-18T11:20:00.000Z',
+          'stops': [
+            'HKG',
+          ],
+          'duration': 13 * 60 + 30,
+        },
+      ],
+    },
+    {
       'price': 41819,
       'carrier': 'SU',
       'segments': [

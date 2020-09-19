@@ -11,8 +11,9 @@ import LogoShadowFile from './assets/Logo.svg';
 
 
 const StyledApp = styled.div`
-  width: 960px;
-`
+  max-width: 960px;
+  margin: 0 auto;
+`;
 
 const Header = styled.header`
   display: flex;
@@ -28,17 +29,24 @@ const Logo = styled.span`
   display: inline-block;
   background-size: contain;
   background: url(${LogoShadowFile}) no-repeat center center;
-  margin: 1rem;
 `;
 
 const Main = styled.main`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  
 `;
 
 const Aside = styled.aside`
+  margin-right: 1.5rem;
+  min-width: 232px;
+`;
 
-`
+const Content = styled.div`
+  max-width: 502px;
+  flex: 1;
+`;
 
 function App() {
   useGate(TicketsGate);
@@ -53,10 +61,10 @@ function App() {
         <Aside>
           <Filters />
         </Aside>
-        <div>
+        <Content>
           <Ordering />
           <Tickets />
-        </div>
+        </Content>
       </Main>
     </StyledApp>
   );
