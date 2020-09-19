@@ -3,11 +3,11 @@ import { useGate } from 'effector-react';
 import { TicketsGate } from './models/tickets';
 import Tickets from './components/TIckets';
 import Ordering from './components/Ordering';
-import Filters from './components/Filters';
 
 import styled from 'styled-components';
 
 import LogoShadowFile from './assets/Logo.svg';
+import Filters from './components/Filters';
 
 
 const StyledApp = styled.div`

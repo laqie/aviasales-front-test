@@ -1,23 +1,32 @@
 import React, { PropsWithChildren } from 'react';
-import { $filter, setFilter, toggleFilter } from '../models/tickets';
-import { useStore } from 'effector-react';
-import { Filter as IFilter } from '../types';
+import {
+  $allStopFiltersActive,
+  $stopFilters,
+  setAllStopFilters,
+  StopFilter,
+  toggleStopFilter,
+} from '../models/tickets';
+import { useList, useStore } from 'effector-react';
+
 import styled from 'styled-components';
 import Checkbox from '../assets/Checkbox.svg';
 import CheckboxActive from '../assets/CheckboxActive.svg';
 import { skeletonStyle } from '../styles/ui';
+import { stopFormatter } from './Ticket';
 
 
-const StyledFilters = styled.div`
+export const StyledFilters = styled.div`
   display: flex;
   padding: 0;
   flex-direction: column;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  margin-bottom: 1rem;
 `;
 
-const Title = styled.p`
+export const Title = styled.p`
   padding: 18px 0 0 21px;
   margin: 0 0 9px;
   font-weight: 600;
@@ -26,20 +35,21 @@ const Title = styled.p`
 `;
 
 
-const StyledCheckBox = styled.input`
+export const StyledCheckBox = styled.input`
   appearance: none;
   width: 20px;
   height: 20px;
   outline: none;
   margin-right: 12px;
   background: url("${Checkbox}");
+  cursor: pointer;
   
   &:checked {
     background: url("${CheckboxActive}");
   }
 `;
 
-const StyledFilter = styled.label`
+export const StyledFilter = styled.label`
   padding: 10px 21px;
   display: flex;
   flex-direction: row;
@@ -56,7 +66,7 @@ const StyledFilter = styled.label`
   }
 `;
 
-const SkeletonLabel = styled.span`
+export const SkeletonLabel = styled.span`
   ${skeletonStyle('auto', '13px')};
   flex: 0.8;
 `;
@@ -66,7 +76,7 @@ interface FilterProps {
   onChange: () => void;
 }
 
-function Filter({ isActive, onChange, children }: PropsWithChildren<FilterProps>) {
+export function Filter({ isActive, onChange, children }: PropsWithChildren<FilterProps>) {
   return (
     <StyledFilter>
       <StyledCheckBox
@@ -78,7 +88,7 @@ function Filter({ isActive, onChange, children }: PropsWithChildren<FilterProps>
   );
 }
 
-function SkeletonFilter() {
+export function SkeletonFilter() {
   return (
     <StyledFilter>
       <StyledCheckBox
@@ -90,42 +100,23 @@ function SkeletonFilter() {
   );
 }
 
-function Filters() {
-  const filterValue = useStore($filter);
-  const isActive = (filter: IFilter) => Boolean(filterValue & filter);
-  const filterHandler = (filter: IFilter) => () => {
-    toggleFilter(filter);
-  };
 
+function Filters() {
+  const allActive = useStore($allStopFiltersActive);
+  const loading = useStore($stopFilters.map(filters => filters.length === 0));
   return (
     <StyledFilters>
       <Title>Количество пересадок</Title>
-      <Filter
-        onChange={filterHandler(IFilter.All)}
-        isActive={filterValue === IFilter.All}>
+      <Filter isActive={allActive} onChange={() => setAllStopFilters(!allActive)}>
         Все
       </Filter>
-      {Array(4).fill(null).map((_, idx) => <SkeletonFilter key={idx} />)}
-      <Filter
-        onChange={filterHandler(IFilter.NoStops)}
-        isActive={isActive(IFilter.NoStops)}>
-        Без пересадок
-      </Filter>
-      <Filter
-        onChange={filterHandler(IFilter.OneStop)}
-        isActive={isActive(IFilter.OneStop)}>
-        1 пересадка
-      </Filter>
-      <Filter
-        onChange={filterHandler(IFilter.TwoStops)}
-        isActive={isActive(IFilter.TwoStops)}>
-        2 пересадки
-      </Filter>
-      <Filter
-        onChange={filterHandler(IFilter.ThreeStops)}
-        isActive={isActive(IFilter.ThreeStops)}>
-        3 пересадки
-      </Filter>
+      {loading && Array(4).fill(null).map((_, idx) => <SkeletonFilter key={idx} />)}
+      {useList($stopFilters, (filter) => (
+        <Filter isActive={filter.active} onChange={() => toggleStopFilter(filter.stops)}>
+          {stopFormatter(filter.stops)}
+        </Filter>
+      ))}
+
     </StyledFilters>
   );
 }

@@ -1,7 +1,7 @@
 import { combine, createEffect, createEvent, createStore, restore } from 'effector';
 import { createGate } from 'effector-react';
 import { ApiError } from '../../api';
-import { Filter, Ordering, SearchId, SearchIdResponse, Ticket, TicketsResponse } from '../../types';
+import { Ordering, SearchId, SearchIdResponse, Ticket, TicketsResponse } from '../../types';
 
 
 const getTicketTime = (ticket: Ticket) => ticket
@@ -23,26 +23,25 @@ const priceComparator = (t1: Ticket, t2: Ticket): number => {
 };
 
 
-const ticketChecker = (filterValue: Filter) => (ticket: Ticket): boolean => {
-  if (filterValue === Filter.All) return true;
-  if (filterValue === Filter.None) return false;
-  const isActive = (filter: Filter) => Boolean(filterValue & filter);
-  const stops = getTicketStops(ticket);
-  if (isActive(Filter.NoStops) && stops === 0) return true;
-  if (isActive(Filter.OneStop) && stops === 1) return true;
-  if (isActive(Filter.TwoStops) && stops === 2) return true;
-  if (isActive(Filter.ThreeStops) && stops === 3) return true;
-
+const ticketChecker = (filters: StopFilter[]) => (ticket: Ticket): boolean => {
+  for (const { stops } of filters) {
+    if (stops === getTicketStops(ticket)) {
+      return true;
+    }
+  }
   return false;
 };
 
 export const TicketsGate = createGate();
 
-export const $tickets = createStore<Ticket[]>([]);
+export const $stopFilters = createStore<StopFilter[]>([]);
+export const $allStopFiltersActive = $stopFilters.map(filters => filters.every(filter => filter.active));
+export const toggleStopFilter = createEvent<number>();
+export const setAllStopFilters = createEvent<boolean>();
 
-export const $filter = createStore<number>(Filter.All);
-export const setFilter = createEvent<number>();
-export const toggleFilter = createEvent<Filter>();
+export const updateStopFilters = createEffect<TicketsResponse, number[]>();
+
+export const $tickets = createStore<Ticket[]>([]);
 
 export const setOrdering = createEvent<Ordering>();
 export const $ordering = restore(setOrdering, 'price');
@@ -58,13 +57,21 @@ export const fetchTicketsFx = createEffect<SearchId, TicketsResponse, ApiError>(
 
 export const $visibleTickets = combine(
   $tickets,
-  $filter,
+  $stopFilters,
   $ordering,
-  (tickets, filter, ordering) => {
-    return [...tickets.filter(ticketChecker(filter))]
+  (tickets, filters, ordering) => {
+    const activeFilters = filters.filter(filter => filter.active);
+    return [...tickets.filter(ticketChecker(activeFilters))]
       .sort(ordering === 'time' ? timeComparator : priceComparator)
       .slice(0, 5);
   });
+
+export interface StopFilter {
+  stops: number;
+  active: boolean;
+}
+
+
 
 
 

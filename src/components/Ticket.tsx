@@ -1,8 +1,6 @@
 import React from 'react';
 import { Segment as ISegment, Ticket as ITicket } from '../types';
-import styled, { css, keyframes } from 'styled-components';
-import { lighten } from 'polished';
-import { Theme } from '../styles/theme';
+import styled from 'styled-components';
 import { skeletonStyle } from '../styles/ui';
 
 
@@ -93,9 +91,13 @@ const divmod = (value: number, denominator: number): number[] => {
   return [Math.trunc(value / denominator), value % denominator];
 };
 
-const formatMinutes = (minutes: number): string => {
-  let days, hours;
-  [days, minutes] = divmod(minutes, 60 * 24);
+const humanizeMinutes = (minutes: number, withDays: boolean = false): string => {
+  let days = 0, hours;
+
+  if (withDays) {
+    [days, minutes] = divmod(minutes, 60 * 24);
+  }
+
   [hours, minutes] = divmod(minutes, 60);
   return [
     days ? `${days}д` : '',
@@ -104,7 +106,7 @@ const formatMinutes = (minutes: number): string => {
   ].join(' ');
 };
 
-const formatTime = (date: Date) => {
+const getFormattedTime = (date: Date) => {
   return date.toLocaleTimeString('ru', {
     timeZone: 'UTC',
     hour: 'numeric',
@@ -132,7 +134,16 @@ const createCountFormatter = (one: string, two: string, few: string) => {
   };
 };
 
-const stopFormatter = createCountFormatter('пересадка', 'пересадки', 'пересадок');
+const stopCountFormatter = createCountFormatter('пересадка', 'пересадки', 'пересадок');
+
+export const stopFormatter = (n: number) => {
+  switch (n) {
+    case 0:
+      return `Без ${stopCountFormatter(n)}`;
+    default:
+      return `${n} ${stopCountFormatter(n)}`;
+  }
+};
 
 
 interface SegmentProps {
@@ -146,10 +157,10 @@ function Segment({ segment }: SegmentProps) {
     <StyledSegment>
       <SegmentPart>
         <PartHeader>
-          {segment.origin} – {segment.destination}
+          {segment.origin}&nbsp;–&nbsp;{segment.destination}
         </PartHeader>
         <PartBody>
-          {formatTime(date)} – {formatTime(addMinutes(date, segment.duration))}
+          {getFormattedTime(date)}&nbsp;–&nbsp;{getFormattedTime(addMinutes(date, segment.duration))}
         </PartBody>
       </SegmentPart>
       <SegmentPart>
@@ -157,12 +168,12 @@ function Segment({ segment }: SegmentProps) {
           В пути
         </PartHeader>
         <PartBody>
-          {formatMinutes(segment.duration)}
+          {humanizeMinutes(segment.duration)}
         </PartBody>
       </SegmentPart>
       <SegmentPart>
         <PartHeader>
-          {segment.stops.length ? segment.stops.length : 'Без'} {stopFormatter(segment.stops.length)}
+          {stopFormatter(segment.stops.length)}
         </PartHeader>
         <PartBody>
           {segment.stops.join(', ') || 'Прямой'}
@@ -171,8 +182,6 @@ function Segment({ segment }: SegmentProps) {
     </StyledSegment>
   );
 }
-
-
 
 
 const SkeletonPrice = styled.div`
