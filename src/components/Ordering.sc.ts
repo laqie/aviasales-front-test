@@ -7,6 +7,7 @@ export const OrderingButton = styled.button`
   font-weight: 600;
   flex: 1;
   height: 50px;
+  color: ${getThemePath('colors.text')};
   background-color: ${getThemePath('colors.white')};
   text-transform: uppercase;
   outline: none;

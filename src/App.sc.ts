@@ -15,14 +15,6 @@ export const Header = styled.header`
   margin: ${getThemePath('spacing.huge')} 0;
 `;
 
-export const Logo = styled.span`
-  width: 60px;
-  height: 60px;
-  display: inline-block;
-  background-size: contain;
-  background: url("${LogoUrl}") no-repeat center center;
-`;
-
 export const Main = styled.main`
   display: flex;
   justify-content: center;
