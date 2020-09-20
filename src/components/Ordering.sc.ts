@@ -1,17 +1,18 @@
 import styled from 'styled-components';
+import { getThemePath } from '../styles';
 
 
 export const OrderingButton = styled.button`
-  font-size: 12px;
+  font-size: ${getThemePath('font.size.small')};
   font-weight: 600;
   flex: 1;
   height: 50px;
-  background-color: white;
+  background-color: ${getThemePath('colors.white')};
   text-transform: uppercase;
   outline: none;
-  color: 1px solid ${({ theme }) => theme.colors.text};
-  border: 1px solid ${({ theme }) => theme.colors.gray};
+  border: 1px solid ${getThemePath('colors.gray')};
   cursor: pointer;
+  margin-bottom: ${getThemePath('spacing.large')};
   
   &:not(:last-child) {
     border-right: none;
@@ -28,9 +29,9 @@ export const OrderingButton = styled.button`
   }
   
   &:disabled {
-    background-color: ${({ theme }) => theme.colors.blue};
-    color: white;
-    border-color: ${({ theme }) => theme.colors.blue};
+    background-color: ${getThemePath('colors.blue')};
+    color: ${getThemePath('colors.white')};
+    border-color: ${getThemePath('colors.blue')};
     cursor: default;
   }
 `;

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import LogoUrl from './assets/images/Logo.svg';
+import { getThemePath } from './styles';
 
 
 export const StyledApp = styled.div`
@@ -9,10 +10,9 @@ export const StyledApp = styled.div`
 
 export const Header = styled.header`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin: 3rem 0;
+  margin: ${getThemePath('spacing.huge')} 0;
 `;
 
 export const Logo = styled.span`
@@ -25,13 +25,11 @@ export const Logo = styled.span`
 
 export const Main = styled.main`
   display: flex;
-  flex-direction: row;
   justify-content: center;
-  
 `;
 
 export const Aside = styled.aside`
-  margin-right: 1.5rem;
+  margin-right: ${getThemePath('spacing.large')};
   min-width: 232px;
 `;
 

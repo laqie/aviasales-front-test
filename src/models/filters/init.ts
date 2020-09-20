@@ -1,5 +1,5 @@
 import { forward } from 'effector';
-import { $stopFilters, setAllStopFilters, toggleStopFilter, updateStopFilters } from './index';
+import { $stopFilters, setAllStopFilters, toggleStopFilter, updateStopFilters } from '.';
 import { fetchTicketsFx } from '../tickets';
 
 

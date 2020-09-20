@@ -1,12 +1,12 @@
 import styled from 'styled-components';
+import { getThemePath } from '../styles';
 
 
 export const StyledSegment = styled.div`
   display: flex;
-  flex-direction: row;
   
   &:not(:last-child) {
-    margin-bottom: 14px;
+    margin-bottom: ${getThemePath('spacing.medium')};
   }
 `;
 
@@ -19,11 +19,11 @@ export const SegmentPart = styled.div`
 `;
 
 export const PartHeader = styled.div`
-   font-size: 12px;
+   font-size: ${getThemePath('font.size.small')};
    font-weight: 600;
-   color: ${({ theme }) => theme.colors.textMuted};
+   color: ${getThemePath('colors.textMuted')};
    text-transform: uppercase;
-   margin-bottom: 6px;
+   margin-bottom: ${getThemePath('spacing.xSmall')};
 `;
 
 export const PartBody = styled.div`

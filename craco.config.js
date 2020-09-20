@@ -10,7 +10,7 @@ module.exports = {
       new NormalModuleReplacementPlugin(
         /(.*)tickets\.json/,
         function(resource) {
-          const shouldReplace = process.env.REACT_APP_DEBUG !== 'true';
+          const shouldReplace = process.env.REACT_APP_DEBUG !== 'true' || process.env.NODE_ENV === 'production';
           if (shouldReplace) {
             resource.request = resource.request.replace(/tickets\.json/, 'ticketsEmpty.json');
           }

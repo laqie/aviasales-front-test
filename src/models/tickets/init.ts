@@ -1,7 +1,7 @@
 import { combine, forward, guard, sample } from 'effector';
-import { $retries, $searchId, $stop, $tickets, fetchSearchIdFx, fetchTicketsFx } from '.';
 import api from '../../api';
 import { AppGate } from '../app';
+import { $retries, $searchId, $stop, $tickets, fetchSearchIdFx, fetchTicketsFx } from '.';
 
 
 $tickets

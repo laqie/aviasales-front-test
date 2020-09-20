@@ -1,15 +1,16 @@
 import { normalize } from 'polished';
 import { createGlobalStyle } from 'styled-components';
+import { getThemePath } from '.';
 
 
 const GlobalStyles = createGlobalStyle`
   ${normalize}
   
   body {
-    background-color: ${({ theme }) => theme.colors.lightBlue};
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    color: ${({ theme }) => theme.colors.text};
+    background-color: ${getThemePath('colors.lightBlue')};
+    font-family: ${getThemePath('font.family')};
+    font-size: ${getThemePath('font.size.default')};
+    color: ${getThemePath('colors.text')};
   }
 `;
 

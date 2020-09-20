@@ -2,7 +2,7 @@ import { SearchId, SearchIdResponse, TicketsResponse } from '../types';
 import { delay } from '../utils';
 
 
-const DEBUG = process.env.REACT_APP_DEBUG === 'true';
+const DEBUG = process.env.REACT_APP_DEBUG === 'true' && process.env.NODE_ENV !== 'production';
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
