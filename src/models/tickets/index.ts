@@ -1,4 +1,4 @@
-import { combine, createEffect, createStore } from 'effector';
+import { combine, createEffect, createEvent, createStore } from 'effector';
 import { ApiError } from '../../api';
 import { SearchId, SearchIdResponse, Ticket, TicketsResponse } from '../../types';
 import { $stopFilters } from '../filters';
@@ -20,6 +20,9 @@ export const $visibleTickets = combine(
       .sort(ordering === 'time' ? timeComparator : priceComparator)
       .slice(0, 5);
   });
+
+// Events
+export const fetchTickets = createEvent<void>();
 
 // Effects
 export const fetchSearchIdFx = createEffect<void, SearchIdResponse>();

@@ -1,7 +1,10 @@
-import { combine, forward, guard, sample } from 'effector';
+import { forward, guard, sample } from 'effector';
 import api from '../../api';
 import { AppGate } from '../app';
-import { $retries, $searchId, $stop, $tickets, fetchSearchIdFx, fetchTicketsFx } from '.';
+import { $retries, $searchId, $stop, $tickets, fetchSearchIdFx, fetchTickets, fetchTicketsFx } from '.';
+
+
+const MAX_RETRIES = 3;
 
 
 $tickets
@@ -33,43 +36,37 @@ forward({
   to: fetchSearchIdFx,
 });
 
-// Start loading tickets when searchId has been loaded
+// Map $searchId to fetchTicketsFx when fetchTickets triggered
 sample({
   source: $searchId,
-  clock: fetchSearchIdFx.done,
+  clock: fetchTickets,
   fn: searchId => searchId,
   target: fetchTicketsFx,
+});
+
+// Start loading tickets when searchId has been loaded
+forward({
+  from: fetchSearchIdFx.done,
+  to: fetchTickets,
 });
 
 // Continue loading tickets while stop is true
-sample({
-  source: $searchId,
-  clock: guard({
-    source: fetchTicketsFx.done,
-    filter: $stop.map(s => !s),
-  }),
-  fn: searchId => searchId,
-  target: fetchTicketsFx,
+guard({
+  source: fetchTicketsFx.done,
+  filter: $stop.map(s => !s),
+  target: fetchTickets,
 });
 
 // Retry fetchTicketsFx if previous request failed with
-// status 500 and retries less then 4
-sample({
-  source: guard({
-    source: combine({
-      searchId: $searchId,
-      retries: $retries,
+// status 500 and retries less then MAX_RETRIES
+guard({
+  source: sample({
+    source: $retries,
+    clock: guard({
+      source: fetchTicketsFx.failData,
+      filter: error => error.status === 500,
     }),
-    filter: ({ retries }) => {
-      return retries < 4;
-    },
   }),
-  clock: guard({
-    source: fetchTicketsFx.fail,
-    filter: ({ error }) => {
-      return error.status === 500;
-    },
-  }),
-  fn: ({ searchId }) => searchId,
-  target: fetchTicketsFx,
+  filter: (retries: number) => retries <= MAX_RETRIES,
+  target: fetchTickets,
 });
