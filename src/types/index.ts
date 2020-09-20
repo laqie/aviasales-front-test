@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+
 export enum Filter {
   None = 0,
   NoStops = 1 << 0,
@@ -38,10 +41,15 @@ export interface Ticket {
   carrier: string;
   // Массив перелётов.
   // В тестовом задании это всегда поиск "туда-обратно" значит состоит из двух элементов
-  segments: [Segment, Segment];
+  segments: [Segment, Segment]; // eslint-disable-line
 }
 
 export interface TicketsResponse {
   tickets: Ticket[];
   stop: boolean;
+}
+
+export interface StopFilter {
+  stops: number;
+  active: boolean;
 }
