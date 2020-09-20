@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import LogoUrl from './assets/images/Logo.svg';
 import { getThemePath } from './styles';
 
 

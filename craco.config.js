@@ -20,7 +20,14 @@ module.exports = {
   },
   babel: {
     plugins: [
-      ['babel-plugin-styled-components', { ssr: false }],
+      [
+        'babel-plugin-styled-components',
+        {
+          ssr: false,
+          displayName: process.env.NODE_ENV === 'development',
+          minify: process.env.NODE_ENV === 'production',
+        },
+      ],
     ],
   },
 };
