@@ -27,7 +27,7 @@ class Api {
 
   async getTickets(searchId: SearchId): Promise<TicketsResponse> {
     if (DEBUG) {
-      await delay(2300);
+      await delay(500);
       const ticketsResponse: unknown = await import('../assets/data/tickets.json');
       return ticketsResponse as TicketsResponse;
     }

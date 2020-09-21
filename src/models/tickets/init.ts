@@ -1,11 +1,10 @@
 import { forward, guard, sample } from 'effector';
 import api from '../../api';
 import { AppGate } from '../app';
-import { $retries, $searchId, $stop, $tickets, fetchSearchIdFx, fetchTickets, fetchTicketsFx } from '.';
+import { $searchId, $stop, $tickets, fetchSearchIdFx, fetchTickets, fetchTicketsFx } from '.';
 
 
 const MAX_RETRIES = 3;
-
 
 $tickets
   .on(fetchTicketsFx.doneData, (state, { tickets }) => state.concat(tickets));
@@ -16,19 +15,25 @@ $searchId
 $stop
   .on(fetchTicketsFx.doneData, (_, { stop }) => stop);
 
-$retries
-  .on(fetchTicketsFx.fail, v => v + 1)
-  .reset(fetchTicketsFx.done);
-
 
 fetchSearchIdFx.use(async () => {
   return api.getSearchId();
 });
 
 fetchTicketsFx.use(async (searchId) => {
-  return api.getTickets(searchId);
+  let currentRetries = MAX_RETRIES;
+  while (true) {
+    try {
+      return await api.getTickets(searchId);
+    } catch (e) {
+      if (e.status === 500 && currentRetries > 0) {
+        currentRetries--;
+        continue;
+      }
+      throw e;
+    }
+  }
 });
-
 
 // Start loading searchId on App mounted
 forward({
@@ -50,23 +55,9 @@ forward({
   to: fetchTickets,
 });
 
-// Continue loading tickets while stop is true
+// Continue loading tickets while stop is not true
 guard({
   source: fetchTicketsFx.done,
   filter: $stop.map(s => !s),
-  target: fetchTickets,
-});
-
-// Retry fetchTicketsFx if previous request failed with
-// status 500 and retries less then MAX_RETRIES
-guard({
-  source: sample({
-    source: $retries,
-    clock: guard({
-      source: fetchTicketsFx.failData,
-      filter: error => error.status === 500,
-    }),
-  }),
-  filter: (retries: number) => retries <= MAX_RETRIES,
   target: fetchTickets,
 });

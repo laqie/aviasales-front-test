@@ -7,7 +7,6 @@ import { priceComparator, ticketChecker, timeComparator } from '../../utils/tick
 
 // Stores
 export const $tickets = createStore<Ticket[]>([]);
-export const $retries = createStore(0);
 export const $searchId = createStore<SearchId>('');
 export const $stop = createStore(false);
 export const $visibleTickets = combine(

@@ -17,5 +17,3 @@ export const $pending = restore(
   }),
   true,
 );
-
-$pending.watch(console.log);
