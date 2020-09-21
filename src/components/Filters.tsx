@@ -6,12 +6,12 @@ import { stopsFormatter } from '../utils';
 import { StyledFilters, Title } from './Filters.sc';
 import FilterSkeleton from './FilterSkeleton';
 import Filter from './Filter';
-import { $allStopFiltersActive, $stopFilters, setAllStopFilters, toggleStopFilter } from '../models/filters';
+import { $isAllStopFiltersActive, $stopFilters, setAllStopFilters, toggleStopFilter } from '../models/filters';
 import { $appReady } from '../models/app';
 
 
 function Filters() {
-  const allFiltersActive = useStore($allStopFiltersActive);
+  const allFiltersActive = useStore($isAllStopFiltersActive);
   const appReady = useStore($appReady);
 
   return (

@@ -1,10 +1,10 @@
 import { forward } from 'effector';
-import { $stopFilters, setAllStopFilters, toggleStopFilter, updateStopFilters } from '.';
+import { $stopFilters, setAllStopFilters, toggleStopFilter, updateStopFiltersFx } from '.';
 import { fetchTicketsFx } from '../tickets';
 
 
 $stopFilters
-  .on(updateStopFilters.doneData, (state, stops) => {
+  .on(updateStopFiltersFx.doneData, (state, stops) => {
     for (const stop of stops) {
       if (!state.some(f => f.stops === stop)) {
         state = state.concat({
@@ -18,7 +18,7 @@ $stopFilters
   .on(toggleStopFilter, (state, stops) => state.map(f => f.stops === stops ? { ...f, active: !f.active } : f))
   .on(setAllStopFilters, (state, active) => state.map(f => ({ ...f, active: active })));
 
-updateStopFilters.use(({ tickets }) => {
+updateStopFiltersFx.use(({ tickets }) => {
   return Array.from(tickets
     .map(ticket => ticket.segments.map(segment => segment.stops.length))
     .reduce((set, stops) => {
@@ -31,5 +31,5 @@ updateStopFilters.use(({ tickets }) => {
 
 forward({
   from: fetchTicketsFx.doneData,
-  to: updateStopFilters,
+  to: updateStopFiltersFx,
 });
