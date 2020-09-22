@@ -4,7 +4,7 @@ import { debounce } from '../../utils/effector';
 import { fetchSearchIdFx, fetchTicketsFx } from '../tickets';
 
 
-export const AppGate = createGate<void>();
+export const AppGate = createGate();
 export const $appReady = createStore<boolean>(false);
 export const $pending = restore(
   debounce({

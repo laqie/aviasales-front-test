@@ -291,7 +291,7 @@ describe('Tickets tests', () => {
   });
 
   test('should start fetchSearchIdFx on open AppGate', async () => {
-    AppGate.open();
+    AppGate.open({});
 
     expect(fetchSearchIdMock).toBeCalledTimes(1);
   });
