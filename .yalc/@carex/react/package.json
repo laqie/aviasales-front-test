@@ -1,0 +1,29 @@
+{
+  "name": "@carex/react",
+  "version": "1.1.0+fa6bc798",
+  "author": "Alexander Starkov <mail@laqie.net>",
+  "license": "MIT",
+  "private": true,
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rimraf dist && webpack && dts-bundle-generator -o dist/index.d.ts src/index.ts",
+    "test": "jest --verbose",
+    "publish:local": "yalc publish --private",
+    "publish:push": "yalc push --private",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "rxjs": "^6.6.3"
+  },
+  "clean-package": {
+    "remove": [
+      "scripts"
+    ]
+  },
+  "yalcSig": "fa6bc798403a42bd8ecad6b524a6c54f"
+}
