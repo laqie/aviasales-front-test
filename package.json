@@ -25,8 +25,8 @@
     ]
   },
   "dependencies": {
-    "effector": "^21.3.0",
-    "effector-react": "^21.0.6",
+    "@carex/core": "file:.yalc/@carex/core",
+    "@carex/react": "file:.yalc/@carex/react",
     "polished": "^3.6.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

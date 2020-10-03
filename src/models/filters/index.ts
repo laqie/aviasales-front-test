@@ -1,9 +1,14 @@
-import { createEffect, createEvent, createStore } from 'effector';
-import { StopFilter, TicketsResponse } from '../../types';
+import { ObservableEvent, ObservableStore } from '@carex/core';
+import { StopFilter } from '../../types';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 
-export const $stopFilters = createStore<StopFilter[]>([]);
-export const $isAllStopFiltersActive = $stopFilters.map(filters => filters.every(filter => filter.active));
-export const toggleStopFilter = createEvent<number>();
-export const setAllStopFilters = createEvent<boolean>();
-export const updateStopFiltersFx = createEffect<TicketsResponse, number[]>();
+export const stopFilters$ = new ObservableStore<StopFilter[]>([]);
+
+export const isAllStopFiltersActive$ = stopFilters$.pipe(
+  map(filters => filters.every(filter => filter.active)),
+  distinctUntilChanged(),
+);
+
+export const setAllStopFilters$ = new ObservableEvent<boolean>();
+export const toggleStopFilter$ = new ObservableEvent<number>();

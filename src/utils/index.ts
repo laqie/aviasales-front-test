@@ -1,4 +1,4 @@
-export const delay = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
+export const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
 const divmod = (n: number, d: number) => [Math.trunc(n / d), n % d];
 

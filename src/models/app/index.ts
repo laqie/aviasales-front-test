@@ -1,19 +1,15 @@
-import { createGate } from 'effector-react';
-import { combine, createStore, restore } from 'effector';
-import { debounce } from '../../utils/effector';
-import { fetchSearchIdFx, fetchTicketsFx } from '../tickets';
+import { ObservableEvent, ObservableStore } from '@carex/core';
+import { combineLatest } from 'rxjs';
+import { fetchSearchIdFx$, fetchTicketsFx$ } from '../tickets';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 
-export const AppGate = createGate();
-export const $appReady = createStore<boolean>(false);
-export const $pending = restore(
-  debounce({
-    source: combine(
-      fetchTicketsFx.pending,
-      fetchSearchIdFx.pending,
-      (...args) => args.some(Boolean),
-    ),
-    ms: 100,
-  }),
-  true,
+export const appMounted$ = new ObservableEvent();
+export const appReady$ = new ObservableStore(false);
+export const pending$ = combineLatest(
+  [fetchTicketsFx$.pending$, fetchSearchIdFx$.pending$],
+).pipe(
+  map(states => states.some(Boolean)),
+  distinctUntilChanged(),
+  debounceTime(100),
 );

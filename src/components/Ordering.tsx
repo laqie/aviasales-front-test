@@ -1,14 +1,14 @@
 import React from 'react';
-import { useStore } from 'effector-react';
+import {useStore} from '@carex/react';
 
 import { Ordering as IOrdering } from '../types';
 import { OrderingButton, StyledOrdering } from './Ordering.sc';
-import { $ordering, setOrdering } from '../models/ordering';
+import { ordering$, setOrdering$ } from '../models/ordering';
 
 
 function Ordering() {
-  const currentOrdering = useStore($ordering);
-  const handleOrderingClick = (ordering: IOrdering) => () => setOrdering(ordering);
+  const currentOrdering = useStore(ordering$);
+  const handleOrderingClick = (ordering: IOrdering) => () => setOrdering$.trigger(ordering);
 
   return (
     <StyledOrdering>

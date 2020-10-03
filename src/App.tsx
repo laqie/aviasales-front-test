@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { AppGate } from './models/app';
+import { appMounted$ } from './models/app';
 
 import { Aside, Content, Header, Main, StyledApp } from './App.sc';
 import theme from './styles/theme';
@@ -12,11 +12,14 @@ import Logo from './components/Logo';
 
 
 function App() {
+  useEffect(() => {
+    appMounted$.trigger();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <StyledApp>
-        <AppGate />
         <Header>
           <a href="/">
             <Logo />

@@ -1,8 +1,14 @@
-import { SearchId, SearchIdResponse, TicketsResponse } from '../types';
-import { delay } from '../utils';
+import { fromFetch } from 'rxjs/fetch';
+import { defer, EMPTY, Observable, of, throwError } from 'rxjs';
+import { catchError, delay, expand } from 'rxjs/operators';
+import { SearchIdResponse, TicketsResponse } from '../types';
+import ticketsResponse from '../assets/data/tickets.json';
 
 
 const DEBUG = process.env.REACT_APP_DEBUG === 'true' && process.env.NODE_ENV !== 'production';
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+export const MAX_RETRIES_STATUS = 1337;
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
@@ -10,34 +16,63 @@ export class ApiError extends Error {
   }
 }
 
-class Api {
-  constructor(private baseUrl: string) {
-  }
-
-  async getSearchId(): Promise<SearchIdResponse> {
-    await delay(500);
-    if (DEBUG) {
-      return {
-        searchId: 'vi23Ef',
-      };
-    }
-    const response = await fetch(`${this.baseUrl}/search`);
-    return response.json();
-  }
-
-  async getTickets(searchId: SearchId): Promise<TicketsResponse> {
-    if (DEBUG) {
-      await delay(500);
-      const ticketsResponse: unknown = await import('../assets/data/tickets.json');
-      return ticketsResponse as TicketsResponse;
-    }
-
-    const response = await fetch(`${this.baseUrl}/tickets?searchId=${searchId}`);
-    if (response.status === 200) {
+function createRequest(url: string) {
+  return fromFetch(url, {
+    selector: response => {
+      if (!response.ok) {
+        return throwError(new ApiError(response.status, 'Response not ok'));
+      }
       return response.json();
-    }
-    throw new ApiError(response.status, 'oops');
-  }
+    },
+  });
 }
 
-export default new Api(process.env.REACT_APP_API_BASE_URL);
+function fetchSearchId(): Observable<SearchIdResponse> {
+  if (DEBUG) {
+    return of({ searchId: 'vi23Ef' }).pipe(
+      delay(500),
+    );
+  }
+  return createRequest(`${BASE_URL}/search`);
+}
+
+function fetchTickets(searchId: string): Observable<TicketsResponse> {
+  if (DEBUG) {
+    return of(ticketsResponse as TicketsResponse).pipe(
+      delay(500),
+    );
+  }
+  return createRequest(`${BASE_URL}/tickets?searchId=${searchId}`);
+}
+
+function fetchTicketsWithRetries(searchId: string, retriesLimit: number = 4) {
+  let totalRetries = 0;
+  return defer(() => fetchTickets(searchId)).pipe(
+    catchError((error: ApiError, caught) => {
+      if (totalRetries++ === retriesLimit) {
+        return throwError(new ApiError(MAX_RETRIES_STATUS, 'Retries limit exceeded'));
+      }
+      if (error.status !== 500) {
+        return throwError(error);
+      }
+      return caught;
+    }),
+  );
+}
+
+function fetchTicketsUntilStop(searchId: string) {
+  const request$ = defer(() => fetchTicketsWithRetries(searchId));
+
+  return request$.pipe(
+    expand(response => {
+      if (response.stop) return EMPTY;
+      return request$;
+    }),
+  );
+}
+
+
+export default {
+  fetchSearchId,
+  fetchTicketsUntilStop,
+};

@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "packages": {
+    "@carex/core": {
+      "signature": "18c6f6439a4cdcf7db8d43bd1fb6b968",
+      "file": true
+    },
+    "@carex/react": {
+      "signature": "55576cd29b3fd4711cfdadabf44348bc",
+      "file": true
+    }
+  }
+}

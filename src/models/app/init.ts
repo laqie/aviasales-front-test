@@ -1,5 +1,12 @@
-import { fetchTicketsFx } from '../tickets';
-import { $appReady } from '.';
+import { appReady$ } from './index';
+import { fetchTicketsFx$ } from '../tickets';
+import { mapTo, take } from 'rxjs/operators';
 
 
-$appReady.on(fetchTicketsFx.done, () => true);
+appReady$.on(
+  fetchTicketsFx$.result$.pipe(
+    mapTo(true),
+    take(1),
+  ),
+  () => true,
+);

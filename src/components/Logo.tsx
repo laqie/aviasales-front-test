@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useStore } from 'effector-react';
-import { $pending } from '../models/app';
+import { useStore } from '@carex/react';
+import { pending$ } from '../models/app';
 import { Plane, StyledLogo } from './Logo.sc';
 
 
 function Logo() {
-  const appPending = useStore($pending);
+  const appPending = useStore(pending$);
   const [pending, setPending] = useState(true);
   const ref = useRef<HTMLSpanElement>();
 
