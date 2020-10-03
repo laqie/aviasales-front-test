@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@carex/react';
+import { useList, useStore } from '@carex/react';
 
 import { visibleTickets$ } from '../models/tickets';
 import { Info, StyledTickets } from './TicketsList.sc';
@@ -11,7 +11,6 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 function TicketsList() {
   const appReady = useStore(appReady$);
-  const tickets = useStore(visibleTickets$);
   const isEmpty = useStore(visibleTickets$.pipe(
     map(tickets => tickets.length === 0),
     distinctUntilChanged(),
@@ -19,9 +18,9 @@ function TicketsList() {
 
   return (
     <StyledTickets>
-      {!appReady && Array(5).fill(null).map((_, idx) => <TicketSkeleton key={idx} />)}
+      {!appReady && Array.from({ length: 5 }, (_, idx) => <TicketSkeleton key={idx} />)}
       {appReady && isEmpty && <Info>Ничего не найдено</Info>}
-      {tickets.map((ticket, idx) => <Ticket key={idx} ticket={ticket} />)}
+      {useList(visibleTickets$, ticket => <Ticket ticket={ticket} />)}
     </StyledTickets>
   );
 }
