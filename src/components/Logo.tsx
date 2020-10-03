@@ -7,7 +7,7 @@ import { Plane, StyledLogo } from './Logo.sc';
 function Logo() {
   const appPending = useStore(pending$);
   const [pending, setPending] = useState(true);
-  const ref = useRef<HTMLSpanElement>();
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const handler = () => setPending(appPending);
@@ -15,11 +15,11 @@ function Logo() {
 
     currentRef?.addEventListener('animationiteration', handler);
     return () => currentRef?.removeEventListener('animationiteration', handler);
-  }, [setPending, appPending]);
+  }, [appPending]);
 
   return (
     <StyledLogo>
-      <Plane ref={ref as any} pending={pending} />
+      <Plane ref={ref} pending={pending} />
     </StyledLogo>
   );
 }
