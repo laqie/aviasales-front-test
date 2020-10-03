@@ -2,11 +2,11 @@
   "version": "v1",
   "packages": {
     "@carex/core": {
-      "signature": "18c6f6439a4cdcf7db8d43bd1fb6b968",
+      "signature": "cdfb206e552dfcf0bc708df8b4f69cbc",
       "file": true
     },
     "@carex/react": {
-      "signature": "8836918422e45fd05057b7c3c760d4f8",
+      "signature": "fa6bc798403a42bd8ecad6b524a6c54f",
       "file": true
     }
   }
