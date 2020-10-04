@@ -1,5 +1,4 @@
-import { PropsWithRef } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import LogoUrl from '../assets/images/Logo.svg';
 import PlaneUrl from '../assets/images/Plane.svg';
 
@@ -13,6 +12,7 @@ const rotate = keyframes`
     transform: rotate(360deg);
   }
 `;
+
 export const StyledLogo = styled.span`
   width: 60px;
   height: 60px;
@@ -21,11 +21,7 @@ export const StyledLogo = styled.span`
   background: url("${LogoUrl}") no-repeat center center;
 `;
 
-interface PlaneProps {
-  pending: boolean;
-}
-
-export const Plane = styled.span<PropsWithRef<PlaneProps>>`
+export const Plane = styled.span`
   width: 30px;
   height: 30px;
   position: relative;
@@ -34,9 +30,11 @@ export const Plane = styled.span<PropsWithRef<PlaneProps>>`
   background-size: contain;
   display: inline-block;
   background: url("${PlaneUrl}") no-repeat center center; 
+  -webkit-backface-visibility: hidden;
+  animation: ${rotate} 1.2s ease-in-out infinite;
+  animation-play-state: paused;
   
-  ${({ pending }) => pending && css`
-    animation: ${rotate} 1.2s ease-in-out infinite;
-    animation-fill-mode: backwards;
-  `}
+  &.running {
+    animation-play-state: running;
+  }
 `;

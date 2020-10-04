@@ -1,7 +1,7 @@
 import { ObservableEvent, ObservableStore } from '@carex/core';
 import { combineLatest } from 'rxjs';
 import { fetchSearchIdFx$, fetchTicketsFx$ } from '../tickets';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 
 
 export const appMounted$ = new ObservableEvent();
@@ -12,4 +12,5 @@ export const pending$ = combineLatest(
   map(states => states.some(Boolean)),
   distinctUntilChanged(),
   debounceTime(100),
+  startWith(true),
 );

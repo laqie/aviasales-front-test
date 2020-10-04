@@ -27,9 +27,9 @@ export const Price = styled.div`
   font-size: ${getThemePath('font.size.large')};
   font-weight: 600;
   color: ${getThemePath('colors.blue')};
-  flex: 3;
+  flex: 1.9;
 `;
 
 export const Carrier = styled.div`
-  flex: 1.3;
+  flex: 1.1;
 `;

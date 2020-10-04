@@ -1,15 +1,17 @@
 import React from 'react';
-import { CheckBox, StyledFilter } from './Filter.sc';
+import { InputCheckBox, StyledFilter } from './Filter.sc';
 import { LabelSkeleton } from './FilterSkeleton.sc';
+import { Checkbox } from './Filter';
 
 
 function FilterSkeleton() {
   return (
     <StyledFilter>
-      <CheckBox
+      <InputCheckBox
         type="checkbox"
         disabled={true}
         defaultChecked={false} />
+      <Checkbox active={false} />
       <LabelSkeleton />
     </StyledFilter>
   );

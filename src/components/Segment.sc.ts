@@ -11,10 +11,14 @@ export const StyledSegment = styled.div`
 `;
 
 export const SegmentPart = styled.div`
-  flex: 1.5;
+  flex: 1;
   
-  &:last-child {
-    flex: 1.3;
+  &:nth-child(2) {
+    flex: 0.9; 
+  }
+  
+  &:nth-child(3) {
+    flex: 1.1;
   }
 `;
 
