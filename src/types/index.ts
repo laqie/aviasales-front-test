@@ -53,3 +53,8 @@ export interface StopFilter {
   stops: number;
   active: boolean;
 }
+
+export interface LocalTicket extends Ticket {
+  stops: number;
+  totalDuration: number;
+}

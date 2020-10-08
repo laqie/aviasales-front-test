@@ -1,6 +1,6 @@
 {
   "name": "@carex/core",
-  "version": "1.1.0+cdfb206e",
+  "version": "1.2.0+7f4efe47",
   "author": "Alexander Starkov <mail@laqie.net>",
   "license": "MIT",
   "private": true,
@@ -10,14 +10,15 @@
     "dist"
   ],
   "scripts": {
-    "build": "rimraf dist && webpack && dts-bundle-generator -o dist/index.d.ts src/index.ts",
+    "build": "webpack",
+    "build:declaration": "dts-bundle-generator -o dist/index.d.ts src/index.ts",
     "test": "jest --verbose",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "concurrently \"yarn build\" \"yarn build:declaration\"",
     "publish:local": "yalc publish --private",
     "publish:push": "yalc push --private"
   },
   "dependencies": {
     "rxjs": "^6.6.3"
   },
-  "yalcSig": "cdfb206e552dfcf0bc708df8b4f69cbc"
+  "yalcSig": "7f4efe4724dd7744e5c51abf05d8ce28"
 }

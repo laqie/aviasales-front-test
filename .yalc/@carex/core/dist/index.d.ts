@@ -6,10 +6,12 @@ export declare function always<T>(handler: () => void): MonoTypeOperatorFunction
 export declare function sampleWith<S, C, R>(clock$: Observable<C>, handler: (source: S, clock: C) => R): (source$: Observable<S>) => Observable<R>;
 export declare function filterWith<T, F>(filter$: Observable<F>, predicate?: (source: T, filter: F) => boolean): MonoTypeOperatorFunction<T>;
 export declare type Handler<S, P> = (state: S, payload: P) => S;
+export declare type ErrorHandler = (error: any) => void;
 export interface Store<State> {
 	on: <Payload>(events$: Observable<Payload> | Observable<Payload>[], handler: Handler<State, Payload>) => Store<State>;
 	off: <Payload>(events$: Observable<Payload> | Observable<Payload>[]) => Store<State>;
 	reset: (events$: Observable<any> | Observable<any>[]) => Store<State>;
+	setErrorHandler: (handler: ErrorHandler) => Store<State>;
 }
 export declare type Trigger<T> = (value: T) => void;
 export interface Event<Payload> {
@@ -34,6 +36,7 @@ export declare class ObservableEffect<Params, Result, Err = Error> extends Obser
 	private handler;
 	static defaultStrategy: Strategy;
 	static defaultHandler: typeof errorHandler;
+	private mapper;
 	private resultSubject$;
 	private errorSubject$;
 	private finallySubject$;
@@ -49,7 +52,6 @@ export declare class ObservableEffect<Params, Result, Err = Error> extends Obser
 	pending$: import("rxjs").Observable<boolean>;
 	constructor(handler?: EffectHandler<Params, Result>);
 	private createSubscription;
-	private getMapper;
 	setStrategy(strategy: Strategy): void;
 	getHandler(): EffectHandler<Params, Result>;
 	setHandler(handler: EffectHandler<Params, Result>): void;
@@ -61,11 +63,13 @@ export declare class ObservableStore<State> extends Observable<State> implements
 	private readonly subject$;
 	private readonly subscriptions;
 	private readonly resetSubscriptions;
+	private errorHandler;
 	constructor(initialValue: State);
 	get asObservable(): () => Observable<State>;
 	on<Payload>(events$: Observable<Payload> | Observable<Payload>[], handler: Handler<State, Payload>): this;
 	off<Payload>(events$: Observable<Payload> | Observable<Payload>[]): this;
 	reset(events$: Observable<any> | Observable<any>[]): this;
+	setErrorHandler(handler: ErrorHandler): this;
 }
 export declare function createApi<S, Api extends {
 	[name: string]: (store: S, e: any) => S;

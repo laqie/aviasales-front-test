@@ -1,9 +1,9 @@
-import { StopFilter, Ticket } from '../types';
+import { LocalTicket, Ticket } from '../types';
 
 
 export const getIATALogoUrl = (iata: string) => `//pics.avs.io/99/36/${iata}.png`;
 
-const getTicketTime = (ticket: Ticket) => ticket
+const getTicketDuration = (ticket: Ticket) => ticket
   .segments
   .map(s => s.duration)
   .reduce((a, b) => a + b);
@@ -13,19 +13,25 @@ const getTicketStops = (ticket: Ticket) => ticket
   .map(s => s.stops.length)
   .reduce((a, b) => Math.max(a, b));
 
-export const timeComparator = (t1: Ticket, t2: Ticket): number => {
-  return getTicketTime(t1) - getTicketTime(t2);
+export const durationComparator = (t1: LocalTicket, t2: LocalTicket): number => {
+  return t1.totalDuration - t2.totalDuration;
 };
 
 export const priceComparator = (t1: Ticket, t2: Ticket): number => {
   return t1.price - t2.price;
 };
 
-export const ticketChecker = (filters: StopFilter[]) => (ticket: Ticket): boolean => {
-  for (const { stops } of filters) {
-    if (stops === getTicketStops(ticket)) {
-      return true;
-    }
-  }
-  return false;
+export const ticketChecker = (filters: number[]) => (ticket: LocalTicket): boolean => {
+  return filters.some(f => f === ticket.stops);
+};
+
+export const transformTicket = (ticket: Ticket): LocalTicket => {
+  const stops = getTicketStops(ticket);
+  const totalDuration = getTicketDuration(ticket);
+
+  return {
+    ...ticket,
+    stops,
+    totalDuration,
+  };
 };

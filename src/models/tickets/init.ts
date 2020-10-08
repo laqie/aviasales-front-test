@@ -2,6 +2,7 @@ import api from '../../api';
 import { appMounted$ } from '../app';
 import { fetchSearchIdFx$, fetchTicketsFx$, searchId$, tickets$ } from './index';
 import { pluck, skip, take } from 'rxjs/operators';
+import { transformTicket } from '../../utils/ticket';
 
 
 fetchSearchIdFx$.setHandler(api.fetchSearchId);
@@ -14,7 +15,7 @@ searchId$.on(fetchSearchIdFx$.result$.pipe(
 
 tickets$.on(fetchTicketsFx$.result$.pipe(
   pluck('tickets'),
-), (state, tickets) => state.concat(tickets));
+), (state, tickets) => state.concat(tickets.map(transformTicket)));
 
 appMounted$.pipe(
   take(1),

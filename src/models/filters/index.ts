@@ -4,6 +4,12 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 
 export const stopFilters$ = new ObservableStore<StopFilter[]>([]);
+export const activeFiltersStops$ = stopFilters$.pipe(
+  map(filters => filters
+    .filter(filter => filter.active)
+    .map(filter => filter.stops),
+  ),
+);
 
 export const isAllStopFiltersActive$ = stopFilters$.pipe(
   map(filters => filters.every(filter => filter.active)),
