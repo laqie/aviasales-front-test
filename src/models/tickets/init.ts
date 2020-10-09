@@ -25,6 +25,3 @@ searchId$.pipe(
   skip(1),
   take(1),
 ).subscribe(fetchTicketsFx$.trigger);
-
-
-fetchTicketsFx$.error$.subscribe(console.error);
