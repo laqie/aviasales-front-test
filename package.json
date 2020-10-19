@@ -5,7 +5,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco src/test",
     "eject": "craco eject",
     "serve": "http-server build"
   },

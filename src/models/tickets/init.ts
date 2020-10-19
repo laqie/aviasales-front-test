@@ -1,13 +1,13 @@
-import api from '../../api';
+import { pluck, skip } from 'rxjs/operators';
+import { fetchSearchId, fetchTicketsUntilStop } from '../../api';
 import { appMounted$ } from '../app';
 import { fetchSearchIdFx$, fetchTicketsFx$, searchId$, tickets$ } from './index';
-import { pluck, skip, take } from 'rxjs/operators';
 import { transformTicket } from '../../utils/ticket';
 
 
-fetchSearchIdFx$.setHandler(api.fetchSearchId);
+fetchSearchIdFx$.setHandler(fetchSearchId);
 
-fetchTicketsFx$.setHandler(api.fetchTicketsUntilStop);
+fetchTicketsFx$.setHandler(fetchTicketsUntilStop);
 
 searchId$.on(fetchSearchIdFx$.result$.pipe(
   pluck('searchId'),
@@ -17,11 +17,9 @@ tickets$.on(fetchTicketsFx$.result$.pipe(
   pluck('tickets'),
 ), (state, tickets) => state.concat(tickets.map(transformTicket)));
 
-appMounted$.pipe(
-  take(1),
-).subscribe(fetchSearchIdFx$.trigger);
+appMounted$
+  .subscribe(fetchSearchIdFx$.trigger);
 
 searchId$.pipe(
   skip(1),
-  take(1),
 ).subscribe(fetchTicketsFx$.trigger);

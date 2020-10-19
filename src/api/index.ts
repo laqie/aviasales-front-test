@@ -16,7 +16,7 @@ export class ApiError extends Error {
   }
 }
 
-function createRequest(url: string) {
+export function createRequest(url: string) {
   return fromFetch(url, {
     selector: response => {
       if (!response.ok) {
@@ -27,7 +27,7 @@ function createRequest(url: string) {
   });
 }
 
-function fetchSearchId(): Observable<SearchIdResponse> {
+export function fetchSearchId(): Observable<SearchIdResponse> {
   if (DEBUG) {
     return of({ searchId: 'vi23Ef' }).pipe(
       delay(500),
@@ -36,7 +36,7 @@ function fetchSearchId(): Observable<SearchIdResponse> {
   return createRequest(`${BASE_URL}/search`);
 }
 
-function fetchTickets(searchId: string): Observable<TicketsResponse> {
+export function fetchTickets(searchId: string): Observable<TicketsResponse> {
   if (DEBUG) {
     return of(ticketsResponse as TicketsResponse).pipe(
       delay(500),
@@ -45,7 +45,7 @@ function fetchTickets(searchId: string): Observable<TicketsResponse> {
   return createRequest(`${BASE_URL}/tickets?searchId=${searchId}`);
 }
 
-function fetchTicketsWithRetries(searchId: string, retriesLimit: number = 4) {
+export function fetchTicketsWithRetries(searchId: string, retriesLimit: number = 4) {
   let totalRetries = 0;
   return defer(() => fetchTickets(searchId)).pipe(
     catchError((error: ApiError, caught) => {
@@ -60,7 +60,7 @@ function fetchTicketsWithRetries(searchId: string, retriesLimit: number = 4) {
   );
 }
 
-function fetchTicketsUntilStop(searchId: string) {
+export function fetchTicketsUntilStop(searchId: string) {
   const request$ = defer(() => fetchTicketsWithRetries(searchId));
 
   return request$.pipe(
@@ -70,9 +70,3 @@ function fetchTicketsUntilStop(searchId: string) {
     }),
   );
 }
-
-
-export default {
-  fetchSearchId,
-  fetchTicketsUntilStop,
-};
