@@ -1,7 +1,6 @@
 import { fetchSearchIdFx$, fetchTicketsFx$, searchId$, tickets$ } from '../models/tickets';
 import { TestScheduler } from 'rxjs/testing';
 import { emptyTicketResponse, searchIdResponse, ticketResponse } from './helpers';
-import { appMounted$ } from '../models/app';
 import { of } from 'rxjs';
 import { ObservableEvent } from '@carex/core';
 import { transformTicket } from '../utils/ticket';
@@ -57,15 +56,6 @@ describe('tickets model tests', () => {
     scheduler.run(({ expectObservable }) => {
       expectObservable(tickets$).toBe('a', { a: [] });
     });
-  });
-
-
-  it('should start fetchSearchIdFx$ and fetchTicketsFx$ once on appMounted$', async () => {
-    appMounted$.trigger();
-    expect(fetchSearchIdMock).toBeCalledTimes(1);
-    expect(fetchTicketsMock).toBeCalledTimes(1);
-
-    expect(fetchTicketsMock).toBeCalledWith(searchIdResponse.searchId);
   });
 
   it('fetchTicketsFx$ handler should be possible to emit several values', () => {

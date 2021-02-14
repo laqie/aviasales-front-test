@@ -2,9 +2,6 @@ const { NormalModuleReplacementPlugin } = require('webpack');
 
 
 module.exports = {
-  eslint: {
-    enable: false,
-  },
   webpack: {
     plugins: [
       new NormalModuleReplacementPlugin(
