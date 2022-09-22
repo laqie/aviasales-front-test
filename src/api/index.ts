@@ -1,7 +1,7 @@
 import { fromFetch } from 'rxjs/fetch';
 import { defer, EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, delay, expand } from 'rxjs/operators';
-import { SearchIdResponse, TicketsResponse } from '../types';
+import { ISearchIdResponse, ITicketsResponse } from '../types';
 import ticketsResponse from '../assets/data/tickets.json';
 
 
@@ -27,7 +27,7 @@ export function createRequest(url: string) {
   });
 }
 
-export function fetchSearchId(): Observable<SearchIdResponse> {
+export function fetchSearchId(): Observable<ISearchIdResponse> {
   if (DEBUG) {
     return of({ searchId: 'vi23Ef' }).pipe(
       delay(500),
@@ -36,9 +36,9 @@ export function fetchSearchId(): Observable<SearchIdResponse> {
   return createRequest(`${BASE_URL}/search`);
 }
 
-export function fetchTickets(searchId: string): Observable<TicketsResponse> {
+export function fetchTickets(searchId: string): Observable<ITicketsResponse> {
   if (DEBUG) {
-    return of(ticketsResponse as TicketsResponse).pipe(
+    return of(ticketsResponse as ITicketsResponse).pipe(
       delay(500),
     );
   }

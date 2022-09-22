@@ -21,6 +21,13 @@ export const {
       blue200: '#F1FCFF',
       blue500: '#2196F3',
     },
+    shadows: {
+      card: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    },
+    sizes: {
+      header: '156px',
+      footer: '3rem',
+    },
     fonts: {
       default: `'Open Sans', sans-serif`,
     },
@@ -39,7 +46,11 @@ export const {
     },
     radii: {
       xs: '3px',
+      sm: '5px',
     },
+  },
+  media: {
+    md: '(min-width: 768px)',
   },
   utils: {
     p: (value: PropertyValue<'padding'>) => ({

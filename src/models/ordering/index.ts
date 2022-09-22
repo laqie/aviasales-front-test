@@ -1,7 +1,7 @@
-import { Ordering } from '../../types';
+import { OrderingType } from '../../types';
 import { ObservableEvent, restore } from '@carex/core';
 
 
-export const setOrdering$ = new ObservableEvent<Ordering>();
+export const setOrdering$ = new ObservableEvent<OrderingType>();
 export const ordering$ = restore(setOrdering$, 'price');
 

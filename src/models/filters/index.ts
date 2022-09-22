@@ -1,9 +1,9 @@
 import { ObservableEvent, ObservableStore } from '@carex/core';
-import { StopFilter } from '../../types';
+import { IStopFilter } from '../../types';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 
-export const stopFilters$ = new ObservableStore<StopFilter[]>([]);
+export const stopFilters$ = new ObservableStore<IStopFilter[]>([]);
 export const activeFiltersStops$ = stopFilters$.pipe(
   map(filters => filters
     .filter(filter => filter.active)
