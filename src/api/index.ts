@@ -5,8 +5,8 @@ import { SearchIdResponse, TicketsResponse } from '../types';
 import ticketsResponse from '../assets/data/tickets.json';
 
 
-const DEBUG = process.env.REACT_APP_DEBUG === 'true' && process.env.NODE_ENV !== 'production';
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const DEBUG = import.meta.env.VITE_APP_DEBUG === 'true' && import.meta.env.MODE !== 'production';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const MAX_RETRIES_STATUS = 1337;
 
@@ -20,7 +20,7 @@ export function createRequest(url: string) {
   return fromFetch(url, {
     selector: response => {
       if (!response.ok) {
-        return throwError(new ApiError(response.status, 'Response not ok'));
+        return throwError(() => new ApiError(response.status, 'Response not ok'));
       }
       return response.json();
     },
@@ -50,10 +50,10 @@ export function fetchTicketsWithRetries(searchId: string, retriesLimit: number =
   return defer(() => fetchTickets(searchId)).pipe(
     catchError((error: ApiError, caught) => {
       if (totalRetries++ === retriesLimit) {
-        return throwError(new ApiError(MAX_RETRIES_STATUS, 'Retries limit exceeded'));
+        return throwError(() => new ApiError(MAX_RETRIES_STATUS, 'Retries limit exceeded'));
       }
       if (error.status !== 500) {
-        return throwError(error);
+        return throwError(() => error);
       }
       return caught;
     }),

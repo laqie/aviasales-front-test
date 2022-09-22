@@ -3,14 +3,9 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "craco eject",
-    "serve": "http-server build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "dev": "vite --port 3000",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "browserslist": {
     "production": [
@@ -25,28 +20,22 @@
     ]
   },
   "dependencies": {
-    "@carex/core": "^1.2.1",
-    "@carex/react": "^1.2.1",
-    "polished": "^4.1.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-is": "^17.0.1",
-    "rxjs": "^6.6.3",
-    "styled-components": "^5.2.1"
+    "@carex/core": "^1.2.2",
+    "@carex/react": "^1.2.2",
+    "polished": "^4.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.2.0",
+    "rxjs": "^7.5.6",
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
-    "@craco/craco": "^6.1.1",
-    "@testing-library/dom": "^7.29.4",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.7.1",
-    "@types/jest": "^26.0.20",
-    "@types/node": "^14.14.27",
-    "@types/react": "^17.0.2",
-    "@types/react-dom": "^17.0.1",
-    "@types/styled-components": "^5.1.7",
-    "http-server": "^0.12.3",
-    "react-scripts": "4.0.2",
-    "typescript": "~4.1.5"
-  }
+    "@types/react": "^18.0.20",
+    "@types/react-dom": "^18.0.6",
+    "@types/styled-components": "^5.1.26",
+    "@vitejs/plugin-react": "^2.1.0",
+    "typescript": "^4.8.3",
+    "vite": "^3.1.3"
+  },
+  "packageManager": "yarn@3.2.3"
 }

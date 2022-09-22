@@ -5,6 +5,7 @@ import { fetchSearchIdFx$, fetchTicketsFx$, searchId$, tickets$ } from './index'
 import { transformTicket } from '../../utils/ticket';
 
 
+console.log('here');
 fetchSearchIdFx$.setHandler(fetchSearchId);
 
 fetchTicketsFx$.setHandler(fetchTicketsUntilStop);

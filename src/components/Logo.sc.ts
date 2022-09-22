@@ -29,11 +29,11 @@ export const Plane = styled.span`
   left: 15px;
   background-size: contain;
   display: inline-block;
-  background: url("${PlaneUrl}") no-repeat center center; 
+  background: url("${PlaneUrl}") no-repeat center center;
   -webkit-backface-visibility: hidden;
   animation: ${rotate} 1.2s ease-in-out infinite;
   animation-play-state: paused;
-  
+
   &.running {
     animation-play-state: running;
   }
