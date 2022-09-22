@@ -37,7 +37,9 @@ export const {
       lg: '24px',
       xl: '48px',
     },
-
+    radii: {
+      xs: '3px',
+    },
   },
   utils: {
     p: (value: PropertyValue<'padding'>) => ({

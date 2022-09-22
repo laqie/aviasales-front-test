@@ -1,10 +1,10 @@
 import { fetchTicketsFx$ } from '../tickets';
-import { map, pluck } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { setAllStopFilters$, stopFilters$, toggleStopFilter$ } from '.';
 
 
 const newFiltersReceived$ = fetchTicketsFx$.result$.pipe(
-  pluck('tickets'),
+  map(result => result.tickets),
   map(tickets => {
     return Array.from(tickets
       .map(ticket => ticket.segments.map(segment => segment.stops.length))
