@@ -1,21 +1,20 @@
-import { pluck, skip } from 'rxjs/operators';
+import { map, skip } from 'rxjs/operators';
 import { fetchSearchId, fetchTicketsUntilStop } from '../../api';
 import { appMounted$ } from '../app';
 import { fetchSearchIdFx$, fetchTicketsFx$, searchId$, tickets$ } from './index';
 import { transformTicket } from '../../utils/ticket';
 
 
-console.log('here');
 fetchSearchIdFx$.setHandler(fetchSearchId);
 
 fetchTicketsFx$.setHandler(fetchTicketsUntilStop);
 
 searchId$.on(fetchSearchIdFx$.result$.pipe(
-  pluck('searchId'),
+  map(result => result.searchId),
 ), (_, searchId) => searchId);
 
 tickets$.on(fetchTicketsFx$.result$.pipe(
-  pluck('tickets'),
+  map(result => result.tickets),
 ), (state, tickets) => state.concat(tickets.map(transformTicket)));
 
 appMounted$
