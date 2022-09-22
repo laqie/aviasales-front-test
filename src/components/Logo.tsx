@@ -19,7 +19,7 @@ function Logo() {
 
   return (
     <StyledLogo>
-      <Plane ref={ref} className={pending ? 'running' : undefined} />
+      <Plane ref={ref} running={pending} />
     </StyledLogo>
   );
 }
