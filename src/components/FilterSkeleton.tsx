@@ -1,7 +1,7 @@
 import { styled } from '../stitches.config';
+import { skeleton } from '../styles';
 import Filter from './Filter';
 import Checkbox from './Checkbox';
-import { skeleton } from '../styles';
 
 
 function FilterSkeleton() {
@@ -21,6 +21,7 @@ function FilterSkeleton() {
 const TextSkeleton = styled('span', {
   ...skeleton('70%', '13px'),
 });
+
 
 FilterSkeleton.Skeleton = TextSkeleton;
 

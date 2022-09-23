@@ -1,5 +1,5 @@
-import { styled } from '../stitches.config';
 import { useStore } from '@carex/react';
+import { styled } from '../stitches.config';
 import { ordering$, setOrdering$ } from '../models/ordering';
 import { OrderingType } from '../types';
 
@@ -11,11 +11,13 @@ function Ordering() {
   return (
     <Container>
       <Button
+        aria-label="Price Ordering"
         onClick={handleOrderingClick('price')}
         disabled={currentOrdering === 'price'}>
         Самый дешевый
       </Button>
       <Button
+        aria-label="Time Ordering"
         onClick={handleOrderingClick('time')}
         disabled={currentOrdering === 'time'}>
         Самый быстрый
@@ -34,11 +36,13 @@ const Button = styled('button', {
   fontFamily: '$default',
   fontWeight: 600,
   height: '50px',
-  color: '$gray500',
-  backgroundColor: '$white',
+  color: '$text',
+  backgroundColor: '$cardBg',
   textTransform: 'uppercase',
   outline: 'none',
-  border: '1px solid $gray100',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: '$border',
   cursor: 'pointer',
 
   '&:not(:last-child)': {
@@ -56,12 +60,13 @@ const Button = styled('button', {
   },
 
   '&:disabled': {
-    backgroundColor: '$blue500',
-    color: '$white',
-    borderColor: '$blue500',
+    backgroundColor: '$accent',
+    color: '$cardBg',
+    borderColor: '$accent',
     cursor: 'default',
   },
 });
+
 
 Ordering.Container = Container;
 Ordering.Button = Button;

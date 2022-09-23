@@ -1,7 +1,7 @@
-import TicketCard from './TicketCard';
-import TicketSegment from './TicketSegment';
 import { styled } from '../stitches.config';
 import { skeleton } from '../styles';
+import TicketCard from './TicketCard';
+import TicketSegment from './TicketSegment';
 
 
 function TicketCardSkeleton() {
@@ -44,6 +44,7 @@ const TitleSkeleton = styled(TicketSegment.Title, {
 const TextSkeleton = styled(TicketSegment.Text, {
   ...skeleton('40%', '16px'),
 });
+
 
 TicketCardSkeleton.PriceSkeleton = PriceSkeleton;
 TicketCardSkeleton.CarrierSkeleton = CarrierSkeleton;

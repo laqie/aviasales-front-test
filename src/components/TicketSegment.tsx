@@ -1,6 +1,6 @@
-import { ISegment } from '../types';
 import { styled } from '../stitches.config';
 import { addMinutes, getFormattedTime, humanizeMinutes, stopsFormatter } from '../utils';
+import { ISegment } from '../types';
 
 
 interface TicketSegmentProps {
@@ -53,13 +53,14 @@ const Column = styled('div', {
 const Title = styled('div', {
   fontSize: '$sm',
   fontWeight: 600,
-  color: '$gray200',
+  color: '$textMuted',
   textTransform: 'uppercase',
 });
 
 const Text = styled('div', {
   fontWeight: 600,
 });
+
 
 TicketSegment.Container = Container;
 TicketSegment.Column = Column;

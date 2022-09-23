@@ -1,20 +1,22 @@
-import { createTheme, styled, theme } from './stitches.config';
+import { useEffect } from 'react';
+import { styled } from './stitches.config';
 import { globalStyles } from './styles/global';
+import { appMounted$ } from './models/app';
 import Logo from './components/Logo';
 import Filters from './components/Filters';
-import { useEffect } from 'react';
-import { appMounted$ } from './models/app';
 import Ordering from './components/Ordering';
 import TicketsList from './components/TicketsList';
+import ThemeToggleButton from './components/ThemeToggleButton';
 
 
 function App() {
-  globalStyles();
   useEffect(appMounted$.trigger, []);
+  globalStyles();
+
   return (
-    <Container className={theme}>
+    <Container>
       <Header>
-        <a href="/"><Logo /></a>
+        <a href="/" aria-label="Logo"><Logo /></a>
       </Header>
       <Sidebar>
         <Filters />
@@ -24,7 +26,7 @@ function App() {
         <TicketsList />
       </Main>
       <Footer>
-        &copy;&nbsp;2022
+        <ThemeToggleButton />
       </Footer>
     </Container>
   );
@@ -32,10 +34,9 @@ function App() {
 
 const Container = styled('div', {
   display: 'grid',
-  color: '$gray500',
-  backgroundColor: '$blue100',
-  minHeight: '100vh',
   minWidth: 320,
+  height: '100vh',
+  px: '$sm',
   gridColumnGap: '$lg',
   gridTemplateColumns: '1fr',
   gridTemplateRows: '$header auto 1fr $footer',
@@ -46,6 +47,7 @@ const Container = styled('div', {
     "footer";
   `,
   '@md': {
+    px: 0,
     gridTemplateColumns: 'auto auto',
     gridTemplateRows: '$header 1fr $footer',
     gridTemplateAreas: `
@@ -98,7 +100,7 @@ const Main = styled('main', {
 const Footer = styled('footer', {
   gridArea: 'footer',
   textAlign: 'center',
-  color: '$gray200',
+  color: '$textMuted',
   display: 'grid',
   alignItems: 'center',
   justifyContent: 'center',

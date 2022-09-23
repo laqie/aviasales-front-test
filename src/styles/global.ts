@@ -13,7 +13,7 @@ export const globalStyles = globalCss(...normalize, {
     boxSizing: 'border-box',
     fontFamily: '$default',
     fontSize: '$md',
-    color: '$gray500',
-    backgroundColor: '$blue100',
+    color: '$text',
+    backgroundColor: '$bodyBg',
   },
 });

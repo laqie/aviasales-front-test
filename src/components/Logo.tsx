@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStore } from '@carex/react';
 import { keyframes, styled } from '../stitches.config';
 import { pending$ } from '../models/app';
@@ -66,6 +66,7 @@ const Plane = styled('span', {
     },
   },
 });
+
 
 Logo.Container = Container;
 Logo.Plane = Plane;

@@ -1,7 +1,7 @@
-import { LocalTicket, ITicket } from '../types';
+import { ITicket, LocalTicket } from '../types';
 
 
-export const getIATALogoUrl = (iata: string) => `//pics.avs.io/99/36/${iata}.png`;
+export const getIATALogoUrl = (iata: string) => `https://pics.avs.io/99/36/${iata}.png`;
 
 const getTicketDuration = (ticket: ITicket) => ticket
   .segments

@@ -1,32 +1,35 @@
 import { createStitches, PropertyValue } from '@stitches/react';
+import { blue, blueDark, slate, slateDark, yellow } from '@radix-ui/colors';
 
 
 export const {
   styled,
-  css,
   globalCss,
   keyframes,
-  getCssText,
   theme,
   createTheme,
   config,
 } = createStitches({
   theme: {
     colors: {
-      white: '#fff',
-      gray100: '#DFE5EC',
-      gray200: '#A0B0B9',
-      gray500: '#4A4A4A',
-      blue100: '#F3F7FA',
-      blue200: '#F1FCFF',
-      blue500: '#2196F3',
+      bodyBg: '#f3f7fa',
+      text: '#4A4A4A',
+      textMuted: slate.slate9,
+      cardBg: '#fff',
+      filterHover: blue.blue3,
+      accent: blue.blue9,
+      border: slate.slate6,
+      skeleton: slate.slate4,
+      toggleButton: slate.slate5,
+      toggleButtonHover: slate.slate3,
+      toggleButtonIcon: blue.blue10,
     },
     shadows: {
       card: '0 2px 8px rgba(0, 0, 0, 0.1)',
     },
     sizes: {
       header: '156px',
-      footer: '3rem',
+      footer: '80px',
     },
     fonts: {
       default: `'Open Sans', sans-serif`,
@@ -47,6 +50,7 @@ export const {
     radii: {
       xs: '3px',
       sm: '5px',
+      round: '50%',
     },
   },
   media: {
@@ -100,5 +104,21 @@ export const {
       marginTop: value,
       marginBottom: value,
     }),
+  },
+});
+
+
+export const darkTheme = createTheme({
+  colors: {
+    bodyBg: slateDark.slate4,
+    cardBg: slateDark.slate5,
+    text: slateDark.slate12,
+    border: slateDark.slate4,
+    textMuted: slateDark.slate11,
+    skeleton: slateDark.slate4,
+    filterHover: blueDark.blue3,
+    toggleButton: slateDark.slate3,
+    toggleButtonHover: slateDark.slate4,
+    toggleButtonIcon: yellow.yellow8,
   },
 });

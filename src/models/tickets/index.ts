@@ -1,7 +1,7 @@
 import { combineLatest } from 'rxjs';
 import { debounceTime, map, shareReplay, startWith } from 'rxjs/operators';
 import { ObservableEffect, ObservableStore } from '@carex/core';
-import { LocalTicket, SearchIdType, ISearchIdResponse, ITicketsResponse } from '../../types';
+import { ISearchIdResponse, ITicketsResponse, LocalTicket, SearchIdType } from '../../types';
 import { ApiError } from '../../api';
 import { activeFiltersStops$ } from '../filters';
 import { ordering$ } from '../ordering';

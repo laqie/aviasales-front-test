@@ -14,7 +14,7 @@ function TicketCard({ ticket }: TicketCardProps) {
       <Header>
         <Price>{ticket.price.toLocaleString('ru')} Р</Price>
         <Carrier>
-          <img src={getIATALogoUrl(ticket.carrier)} alt={ticket.carrier} />
+          <img src={getIATALogoUrl(ticket.carrier)} width="99" height="36" alt={ticket.carrier} />
         </Carrier>
       </Header>
       {ticket.segments.map((segment, idx) => <TicketSegment key={idx} segment={segment} />)}
@@ -23,7 +23,7 @@ function TicketCard({ ticket }: TicketCardProps) {
 }
 
 const Container = styled('section', {
-  backgroundColor: '$white',
+  backgroundColor: '$cardBg',
   borderRadius: '$sm',
   boxShadow: '$card',
   p: '$lg',
@@ -43,12 +43,13 @@ const Header = styled('div', {
 const Price = styled('h3', {
   fontSize: '$xl',
   fontWeight: 600,
-  color: '$blue500',
+  color: '$accent',
   m: 0,
   p: 0,
 });
 
 const Carrier = styled('div', {});
+
 
 TicketCard.Container = Container;
 TicketCard.Header = Header;

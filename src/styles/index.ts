@@ -12,7 +12,7 @@ const pulse = keyframes({
 export const skeleton = (width: string, height: string) => ({
   width,
   height,
-  backgroundColor: '$gray100',
+  backgroundColor: '$skeleton',
   borderRadius: '$xs',
   animation: `${pulse} 1.5s ease-in-out infinite`,
 });

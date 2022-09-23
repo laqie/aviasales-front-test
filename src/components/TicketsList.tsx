@@ -1,9 +1,9 @@
-import TicketCard from './TicketCard';
-import { styled } from '../stitches.config';
 import { useList, useStore } from '@carex/react';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import { styled } from '../stitches.config';
 import { appReady$ } from '../models/app';
 import { visibleTickets$ } from '../models/tickets';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import TicketCard from './TicketCard';
 import TicketCardSkeleton from './TicketCardSkeleton';
 
 
@@ -36,8 +36,8 @@ const Info = styled('div', {
   my: '$xl',
 });
 
+
 TicketsList.Container = Container;
 TicketsList.Info = Info;
-
 
 export default TicketsList;

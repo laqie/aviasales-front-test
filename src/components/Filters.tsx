@@ -29,11 +29,12 @@ function Filters() {
 const Container = styled('div', {
   display: 'grid',
   gridTemplateColumns: '1fr',
-  gridGap: '$md',
-  backgroundColor: '$white',
+  gridGap: 0,
+  backgroundColor: '$cardBg',
   borderRadius: '$sm',
   boxShadow: '$card',
-  py: '$lg',
+  pt: '$lg',
+  pb: '$md',
 
   [`& ${Filter.Label}`]: {
     pl: '$lg',
@@ -45,8 +46,10 @@ const Title = styled('h3', {
   fontSize: '$sm',
   textTransform: 'uppercase',
   m: 0,
+  mb: '$sm',
   p: '0 0 0 $lg',
 });
+
 
 Filters.Container = Container;
 Filters.Title = Title;

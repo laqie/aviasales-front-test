@@ -27,6 +27,12 @@ const Label = styled('label', {
   gridTemplateColumns: 'auto 1fr',
   gap: '$sm',
   alignItems: 'center',
+  py: '$sm',
+  cursor: 'pointer',
+
+  '&:hover': {
+    backgroundColor: '$filterHover',
+  },
 });
 
 const Input = styled('input', {
