@@ -5,7 +5,8 @@ import { ISearchIdResponse, ITicketsResponse } from '../types';
 import ticketsResponse from '../assets/data/tickets.json';
 
 
-const DEBUG = import.meta.env.VITE_APP_DEBUG === 'true' && import.meta.env.MODE !== 'production';
+// const DEBUG = import.meta.env.VITE_APP_DEBUG === 'true' && import.meta.env.MODE !== 'production';
+const DEBUG = true;
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const MAX_RETRIES_STATUS = 1337;
